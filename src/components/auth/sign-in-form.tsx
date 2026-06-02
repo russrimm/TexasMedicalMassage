@@ -1,5 +1,6 @@
 "use client";
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { credentialsSignInAction } from "@/server/actions/auth";
@@ -19,7 +20,7 @@ function SubmitButton() {
 export function SignInForm() {
   const params = useSearchParams();
   const callbackUrl = params.get("callbackUrl") ?? "/dashboard";
-  const [state, formAction] = useFormState(credentialsSignInAction, null);
+  const [state, formAction] = useActionState(credentialsSignInAction, null);
 
   return (
     <form action={formAction} className="space-y-4">

@@ -1,5 +1,6 @@
 "use client";
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import { useSearchParams } from "next/navigation";
 import { signupAction } from "@/server/actions/auth";
 import { Button } from "@/components/ui/button";
@@ -20,7 +21,7 @@ export function SignUpForm() {
   const initialRole = (params.get("role") === "business" ? "business" : "therapist") as
     | "therapist"
     | "business";
-  const [state, formAction] = useFormState(signupAction, null);
+  const [state, formAction] = useActionState(signupAction, null);
 
   return (
     <form action={formAction} className="space-y-4">
