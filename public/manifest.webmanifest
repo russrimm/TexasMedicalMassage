@@ -1,0 +1,9 @@
+{
+  "name": "Texas Medical Massage",
+  "short_name": "TMM",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#178a7a",
+  "icons": []
+}
