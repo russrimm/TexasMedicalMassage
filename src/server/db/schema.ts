@@ -20,10 +20,12 @@ import type { AdapterAccountType } from "next-auth/adapters";
  * PostGIS geography(Point, 4326) — stored as WKB hex by postgres-js.
  * We treat it as opaque text in the ORM and round-trip via raw SQL
  * (ST_MakePoint, ST_AsGeoJSON) in queries.
+ * Schema-qualified as `extensions.geography` because Supabase installs
+ * PostGIS in the `extensions` schema rather than `public`.
  */
 const geography = customType<{ data: string; driverData: string }>({
   dataType() {
-    return "geography(Point, 4326)";
+    return "extensions.geography(Point, 4326)";
   },
 });
 
