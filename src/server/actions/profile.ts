@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { eq, sql } from "drizzle-orm";
 import { db } from "@/server/db/client";
 import { users, therapistProfiles, businessProfiles } from "@/server/db/schema";
+import { pgTextArray } from "@/server/db/sql-helpers";
 import { auth } from "@/server/auth";
 import {
   therapistProfileSchema,
@@ -70,8 +71,8 @@ export async function saveTherapistProfileAction(formData: FormData) {
         license_number=${parsed.licenseNumber || null},
         hourly_rate_min=${parsed.hourlyRateMin ?? null},
         hourly_rate_max=${parsed.hourlyRateMax ?? null},
-        availability=${parsed.availability}::text[],
-        modalities=${parsed.modalities}::text[],
+        availability=${pgTextArray(parsed.availability)}::text[],
+        modalities=${pgTextArray(parsed.modalities)}::text[],
         address_line1=${parsed.addressLine1 || null},
         city=${parsed.city},
         state=${parsed.state},
@@ -91,7 +92,7 @@ export async function saveTherapistProfileAction(formData: FormData) {
         ${user.id}, ${parsed.displayName}, ${parsed.headline || null}, ${parsed.bio || null},
         ${parsed.yearsExperience}, ${parsed.licenseNumber || null},
         ${parsed.hourlyRateMin ?? null}, ${parsed.hourlyRateMax ?? null},
-        ${parsed.availability}::text[], ${parsed.modalities}::text[],
+        ${pgTextArray(parsed.availability)}::text[], ${pgTextArray(parsed.modalities)}::text[],
         ${parsed.addressLine1 || null}, ${parsed.city}, ${parsed.state},
         ${parsed.postalCode || null},
         ST_SetSRID(ST_MakePoint(${parsed.longitude}, ${parsed.latitude}), 4326)::geography,

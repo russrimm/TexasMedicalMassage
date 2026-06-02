@@ -1,5 +1,6 @@
 import { sql } from "drizzle-orm";
 import { db } from "@/server/db/client";
+import { pgTextArray } from "@/server/db/sql-helpers";
 
 export type SearchParams = {
   lng?: number;
@@ -57,7 +58,7 @@ export async function searchTherapists(params: SearchParams = {}): Promise<Thera
     from therapist_profiles tp
     where tp.is_public = true
     ${hasGeo ? sql`and ST_DWithin(tp.location, ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326)::geography, ${milesToMeters(radiusMi)})` : sql``}
-    ${modalities && modalities.length > 0 ? sql`and tp.modalities && ${modalities}::text[]` : sql``}
+    ${modalities && modalities.length > 0 ? sql`and tp.modalities && ${pgTextArray(modalities)}::text[]` : sql``}
     ${minRating != null ? sql`and tp.rating_avg >= ${minRating}` : sql``}
     ${q ? sql`and (tp.display_name ilike ${"%" + q + "%"} or tp.headline ilike ${"%" + q + "%"} or tp.city ilike ${"%" + q + "%"})` : sql``}
     order by
@@ -175,7 +176,7 @@ export async function searchJobs(params: SearchParams = {}): Promise<JobResult[]
     join business_profiles bp on bp.id = j.business_id
     where j.status = 'open'
     ${hasGeo ? sql`and ST_DWithin(j.location, ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326)::geography, ${milesToMeters(radiusMi)})` : sql``}
-    ${modalities && modalities.length > 0 ? sql`and j.required_modalities && ${modalities}::text[]` : sql``}
+    ${modalities && modalities.length > 0 ? sql`and j.required_modalities && ${pgTextArray(modalities)}::text[]` : sql``}
     ${q ? sql`and (j.title ilike ${"%" + q + "%"} or j.description ilike ${"%" + q + "%"} or j.city ilike ${"%" + q + "%"})` : sql``}
     order by
       ${hasGeo ? sql`"distanceMeters" asc nulls last,` : sql``}

@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { and, eq, sql } from "drizzle-orm";
 import { db } from "@/server/db/client";
 import { jobs, businessProfiles } from "@/server/db/schema";
+import { pgTextArray } from "@/server/db/sql-helpers";
 import { auth } from "@/server/auth";
 import { jobSchema } from "@/lib/validation";
 
@@ -51,7 +52,7 @@ export async function createJobAction(formData: FormData) {
       ${parsed.description},
       ${parsed.employmentType}::employment_type,
       ${parsed.payMin ?? null}, ${parsed.payMax ?? null}, ${parsed.payPeriod},
-      ${parsed.requiredModalities}::text[],
+      ${pgTextArray(parsed.requiredModalities)}::text[],
       ${parsed.minYearsExperience},
       ${parsed.city}, ${parsed.state},
       ST_SetSRID(ST_MakePoint(${parsed.longitude}, ${parsed.latitude}), 4326)::geography,
