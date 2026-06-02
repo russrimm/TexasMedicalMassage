@@ -12,6 +12,12 @@ const client =
   postgres(env.DATABASE_URL, {
     prepare: false, // required for Supabase transaction pooler (port 6543)
     max: 10,
+    connection: { application_name: "texas-medical-massage" },
+    // Force IPv4: some networks (and Supabase poolers) advertise IPv6
+    // addresses that aren't routable, causing ENETUNREACH.
+    fetch_types: false,
+    // @ts-expect-error postgres-js forwards this to net.connect
+    family: 4,
   });
 
 if (process.env.NODE_ENV !== "production") globalForDb.client = client;

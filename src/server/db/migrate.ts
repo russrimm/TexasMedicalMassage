@@ -6,7 +6,11 @@ async function main() {
   const url = process.env.DIRECT_URL ?? process.env.DATABASE_URL;
   if (!url) throw new Error("DATABASE_URL (or DIRECT_URL) is required");
 
-  const client = postgres(url, { max: 1 });
+  const client = postgres(url, {
+    max: 1,
+    // @ts-expect-error postgres-js forwards this to net.connect
+    family: 4,
+  });
   const db = drizzle(client);
 
   console.log("Running migrations...");
