@@ -18,7 +18,7 @@ export default async function OnboardingRolePage() {
       </p>
 
       <form action={setRoleAction} className="grid sm:grid-cols-2 gap-4">
-        <RoleCard role="therapist" icon={<UserCircle2 className="h-8 w-8" />} title="I'm a Therapist" />
+        <RoleCard role="therapist" icon={<UserCircle2 className="h-8 w-8" />} title="I'm a LMT" />
         <RoleCard role="business" icon={<Building2 className="h-8 w-8" />} title="I'm a Business" />
       </form>
     </div>

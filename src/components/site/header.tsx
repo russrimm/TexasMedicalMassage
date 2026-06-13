@@ -22,7 +22,7 @@ export async function SiteHeader() {
             href="/therapists"
             className="hidden md:inline-flex px-3 py-2 text-sm font-medium hover:text-primary"
           >
-            Therapists
+            LMTs
           </Link>
           <Link
             href="/businesses"
@@ -79,7 +79,7 @@ export async function SiteHeader() {
       <div className="md:hidden border-t">
         <div className="container flex items-center justify-around py-2 text-xs">
           <Link href="/therapists" className="px-2 py-1">
-            Therapists
+            LMTs
           </Link>
           <Link href="/businesses" className="px-2 py-1">
             Businesses
